@@ -60,7 +60,7 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
     }
     .progress {
       display: flex;
@@ -76,8 +76,12 @@
       border: 2px solid #7bb33d;
       transition: all 0.3s ease;
     }
-    .step-dot.active { background: #7bb33d; }
-    .step-dot.active::after { content: none; }
+    .step-dot.active {
+      background: #7bb33d;
+    }
+    .step-dot.active::after {
+      content: none;
+    }
     .step-line {
       width: 40px;
       height: 3px;
@@ -105,7 +109,9 @@
       flex-wrap: wrap;
       position: relative;
     }
-    .copy-icon { cursor: pointer; }
+    .copy-icon {
+      cursor: pointer;
+    }
     .copy-tooltip {
       position: absolute;
       top: -25px;
@@ -145,9 +151,17 @@
       outline: none;
     }
     input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    input[type=number] { -moz-appearance: textfield; }
-    .form-label { font-size: 13px; color: #333; }
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    .form-label {
+      font-size: 13px;
+      color: #333;
+    }
     .form-input {
       height: 32px;
       padding: 4px 8px;
@@ -179,7 +193,9 @@
       z-index: 1;
     }
     .upload-box input,
-    .upload-box img { z-index: 2; }
+    .upload-box img {
+      z-index: 2;
+    }
     .upload-box input {
       position: absolute;
       opacity: 0;
@@ -258,12 +274,6 @@
       border: 2px solid #e53935 !important;
       background-color: #ffe5e5 !important;
     }
-    .warning-text {
-      color: #e53935;
-      font-size: 12px;
-      text-align: center;
-      margin-top: -5px;
-    }
   </style>
 </head>
 <body>
@@ -275,7 +285,7 @@
   <div class="container">
     <form class="modal" id="transferForm">
       <div class="modal-header">
-        <img src="https://i.postimg.cc/gksJtVNC/charset.png" alt="Transfer Service Logo">
+       <img src="https://i.postimg.cc/gksJtVNC/charset.png" alt="Transfer Service Logo">
       </div>
 
       <div class="modal-body">
@@ -288,7 +298,9 @@
         </div>
 
         <div class="instruction-text">
-          قبل أن تقدم طلبك، قم بالتحويل خلال 10 دقائق باستخدام البيانات التالية:
+         يرجى التأكد من إدخال المبلغ بشكل صحيح دون استخدام الفاصلة (،) لتجنب أي تأخير في معالجة الشحن، حيث أن استخدام الفاصلة قد يؤدي إلى تأخير يصل إلى 48 ساعة.
+
+قبل تقديم طلبك، يُرجى إجراء التحويل خلال 10 دقائق
         </div>
 
         <div class="copy-info">
@@ -318,7 +330,6 @@
             <div class="copy-tooltip">تم النسخ</div>
           </div>
         </div>
-
         <div class="amount-section">
           <div class="amount-label">Amount (Min 100.00 MAD / Max 5000.00 MAD)</div>
           <input type="number" class="amount-input" id="amount" name="amount" placeholder="100.00" min="100" max="5000" required>
@@ -332,13 +343,7 @@
           <div class="upload-box" id="imageBox">
             <input type="file" id="proof" name="proof" accept=".jpg,.jpeg,.png" required>
           </div>
-        </div>
 
-       <div class="warning-text">
-  يُرجى التأكد من إدخال المبلغ بدون استخدام الفاصلة (,) لتفادي أي مشاكل في معالجة الشحن. استخدام الفاصلة قد يؤدي إلى تأخير وصول الشحن حتى 48 ساعة.
-</div>
-
-        <div style="margin-top: 10px;">
           <label class="form-label">الإسم الكامل:</label>
           <input type="text" class="form-input" id="fullname" name="fullname" required>
         </div>
@@ -357,7 +362,6 @@
       </div>
     </form>
   </div>
-
 <script>
   document.getElementById("fullname").addEventListener("input", function () {
     this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
@@ -462,3 +466,30 @@
     const file = document.getElementById("proof").files[0];
     const button = document.getElementById("submitBtn");
     if (!file) return;
+
+    document.getElementById("waveLoader").style.display = "flex";
+    button.disabled = true;
+
+    try {
+      const compressed = await resizeImage(file);
+      const imageBase64 = await blobToBase64(compressed);
+
+      const response = await fetch("https://script.google.com/macros/s/AKfycbx-RNd26M3sjNxxJ4kL0A4OUpMccV7KiTQyxEfberrFO7Qadoamg6MCohMZdFpFd7qrhw/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ amount, fullname, imageBase64 })
+      });
+
+      if (response.ok) {
+        window.location.replace("ab-recharge.HTML");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      document.getElementById("waveLoader").style.display = "none";
+      button.disabled = false;
+    }
+  };
+</script>
+</body>
+</html>
